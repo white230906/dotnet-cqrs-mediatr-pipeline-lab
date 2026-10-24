@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>DotNetCqrsMediatRPipelineLab.Presentation</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+        <PackageReference Include="Carter" Version="8.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Application\dotnet-cqrs-mediatr-pipeline-lab.Application.csproj" />
+      <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Contract\dotnet-cqrs-mediatr-pipeline-lab.Contract.csproj" />
+    </ItemGroup>
+    
+    
+</Project>

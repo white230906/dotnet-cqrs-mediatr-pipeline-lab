@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RootNamespace>DotNetCqrsMediatRPipelineLab.Api</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Http"
+                          Version="8.1.0" />
+
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer"
+                          Version="8.1.0" />
+
+        <PackageReference Include="Carter"
+                          Version="8.1.0" />
+
+        <PackageReference Include="Serilog.AspNetCore"
+                          Version="8.0.2" />
+
+        <PackageReference Include="Swashbuckle.AspNetCore"
+                          Version="8.1.1" />
+
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design"
+                          Version="8.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Controller\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Application\dotnet-cqrs-mediatr-pipeline-lab.Application.csproj" />
+
+        <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Persistence\dotnet-cqrs-mediatr-pipeline-lab.Persistence.csproj" />
+
+        <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Presentation\dotnet-cqrs-mediatr-pipeline-lab.Presentation.csproj" />
+    </ItemGroup>
+
+</Project>
