@@ -478,3 +478,4 @@ dotnet-cqrs-mediatr-pipeline-lab.Api/appsettings.Development.json
 !.docker/.env.sample
 .env
 .claude/
+/dotnet-cqrs-mediatr-pipeline-lab.Api/docs/03-cqrs-mediatr-pipeline/
