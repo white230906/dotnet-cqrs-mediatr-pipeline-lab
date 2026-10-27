@@ -1,19 +1,17 @@
-﻿using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
+using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
 using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Results;
 using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
-using DotNetCqrsMediatRPipelineLab.Contract.WorkItems.Commands;
+
 using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 using Microsoft.Extensions.Options;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Commands;
 
 public  class CreateWorkItemCommandHandler(IWorkItemRepository repository, IOptions<WorkItemOptions> options, 
-    TimeProvider timeProvider) : ICommandHandler<
-        CreateWorkItemCommand,
-        Response.WorkItemResponse>
+    TimeProvider timeProvider) : ICommandHandler<Command.CreateWorkItem, Response.WorkItemResponse>
 {
     public async Task<Result<Response.WorkItemResponse>> Handle(
-        CreateWorkItemCommand request,
+        Command.CreateWorkItem request,
         CancellationToken cancellationToken)
     {
         var item = WorkItem.Create(

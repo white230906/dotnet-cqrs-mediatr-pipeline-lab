@@ -1,17 +1,16 @@
-﻿using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
+using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
 using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Results;
 using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
-using DotNetCqrsMediatRPipelineLab.Contract.WorkItems.Queries;
+
 using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Queries;
 
 public class GetWorkItemHistoryQueryHandler(IWorkItemRepository repository) : IQueryHandler<
-        GetWorkItemHistoryQuery,
-        IReadOnlyCollection<Response.WorkItemStatusHistoryResponse>>
+        Query.GetWorkItemHistory, IReadOnlyCollection<Response.WorkItemStatusHistoryResponse>>
 {
     public async Task<Result<IReadOnlyCollection<Response.WorkItemStatusHistoryResponse>>> Handle(
-        GetWorkItemHistoryQuery request,
+        Query.GetWorkItemHistory request,
         CancellationToken cancellationToken)
     {
         var workItem = await repository.GetByIdAsync(request.WorkItemId, trackChanges: false, cancellationToken);

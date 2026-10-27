@@ -3,7 +3,7 @@ using MediatR;
 
 namespace DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
 
-public interface ICommand : IRequest;
+public interface ICommand : IRequest<Result>;
 //các interface yêu cầu thay đổi dữ liệu  | có trả payload và không
 public interface ICommand<TResponse> : IRequest<Result<TResponse>>;
 
@@ -11,3 +11,5 @@ public interface ICommand<TResponse> : IRequest<Result<TResponse>>;
 
 //Message: hiểu đơn giản là đối tượng được gửi qua MediatR
 //ISender -> Message -> MediatR -> Tìm handler
+
+//TResponse: là kiểu dữ liệu mà Command mốn nhận lại sau khi Handler xử lý xong

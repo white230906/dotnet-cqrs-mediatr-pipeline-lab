@@ -2,18 +2,12 @@
 
 public class Result
 {
-    
+
     public bool IsSuccess { get; }
 
     public bool IsFailure => !IsSuccess;
 
     public IReadOnlyCollection<Error> Errors { get; }
-
-    public static Result Success()
-        => new(true, Array.Empty<Error>());
-
-    public static Result Failure(params Error[] errors)
-        => new(false, errors);
     
     protected Result(bool isSuccess, Error[] errors)
     {
@@ -23,7 +17,7 @@ public class Result
         {
             throw new InvalidOperationException("A successful result cannot contain errors.");
         }
-        
+
         if (!isSuccess && errors.Length == 0)
         {
             throw new InvalidOperationException(
@@ -33,4 +27,10 @@ public class Result
         IsSuccess = isSuccess;
         Errors = Array.AsReadOnly(errors.ToArray());
     }
+
+    public static Result Success()
+        => new(true, Array.Empty<Error>());
+
+    public static Result Failure(params Error[] errors)
+        => new(false, errors);
 }

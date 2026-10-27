@@ -11,7 +11,7 @@ public class Result<T>: Result
     
     public T Value => IsSuccess ? _value! : throw new InvalidOperationException( "The value of a failed result cannot be accessed.");
     
-    public new static Result<T> Success(T value)
+    public static Result<T> Success(T value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

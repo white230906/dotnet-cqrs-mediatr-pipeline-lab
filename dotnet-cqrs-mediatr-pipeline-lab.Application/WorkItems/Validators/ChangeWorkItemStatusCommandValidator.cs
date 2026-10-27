@@ -1,9 +1,9 @@
-﻿using DotNetCqrsMediatRPipelineLab.Contract.WorkItems.Commands;
+using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
 using FluentValidation;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Validators;
 
-public class ChangeWorkItemStatusCommandValidator : AbstractValidator<ChangeWorkItemStatusCommand>
+public class ChangeWorkItemStatusCommandValidator : AbstractValidator<Command.ChangeWorkItemStatus>
 {
     public ChangeWorkItemStatusCommandValidator()
     {

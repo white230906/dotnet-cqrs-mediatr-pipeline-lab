@@ -1,18 +1,16 @@
-﻿using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
+using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
 using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Results;
 using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
-using DotNetCqrsMediatRPipelineLab.Contract.WorkItems.Commands;
+
 using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Commands;
 
 public  class ChangeWorkItemStatusCommandHandler(IWorkItemRepository repository, TimeProvider timeProvider)
-    : ICommandHandler<
-        ChangeWorkItemStatusCommand,
-        Response.WorkItemResponse>
+    : ICommandHandler<Command.ChangeWorkItemStatus, Response.WorkItemResponse>
 {
     public async Task<Result<Response.WorkItemResponse>> Handle(
-        ChangeWorkItemStatusCommand request,
+        Command.ChangeWorkItemStatus request,
         CancellationToken cancellationToken)
     {
         var item = await repository.GetByIdAsync(

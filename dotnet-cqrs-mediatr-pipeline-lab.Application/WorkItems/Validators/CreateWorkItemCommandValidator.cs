@@ -1,10 +1,10 @@
-﻿using DotNetCqrsMediatRPipelineLab.Contract.WorkItems.Commands;
+using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Validators;
 
-public class CreateWorkItemCommandValidator: AbstractValidator<CreateWorkItemCommand>
+public class CreateWorkItemCommandValidator: AbstractValidator<Command.CreateWorkItem>
 {
     public CreateWorkItemCommandValidator(IOptions<WorkItemOptions> options)
     {

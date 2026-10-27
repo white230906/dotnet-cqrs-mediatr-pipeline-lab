@@ -1,17 +1,16 @@
-﻿using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
+using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
 using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Results;
 using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
-using DotNetCqrsMediatRPipelineLab.Contract.WorkItems.Queries;
+
 using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Queries;
 
-public  class GetWorkItemByIdQueryHandler(IWorkItemRepository repository) : IQueryHandler<
-        GetWorkItemByIdQuery,
-        Response.WorkItemResponse>
+public  class GetWorkItemByIdQueryHandler(IWorkItemRepository repository) :
+    IQueryHandler<Query.GetWorkItemById, Response.WorkItemResponse>
 {
     public async Task<Result<Response.WorkItemResponse>> Handle(
-        GetWorkItemByIdQuery request,
+        Query.GetWorkItemById request,
         CancellationToken cancellationToken)
     {
         var item = await repository.GetByIdAsync(
