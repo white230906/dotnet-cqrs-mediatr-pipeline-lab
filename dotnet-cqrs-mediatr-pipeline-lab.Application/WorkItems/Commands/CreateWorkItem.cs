@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Commands;
 
-public  class CreateWorkItemCommandHandler(IWorkItemRepository repository, IOptions<WorkItemOptions> options, 
+public  class CreateWorkItem(IWorkItemRepository repository, IOptions<WorkItemOptions> options, 
     TimeProvider timeProvider) : ICommandHandler<Command.CreateWorkItem, Response.WorkItemResponse>
 {
     public async Task<Result<Response.WorkItemResponse>> Handle(

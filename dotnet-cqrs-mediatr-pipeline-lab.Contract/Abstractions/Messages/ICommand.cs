@@ -3,9 +3,10 @@ using MediatR;
 
 namespace DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Messages;
 
-public interface ICommand : IRequest<Result>;
+public interface ICommandBase;
+public interface ICommand : IRequest<Result>, ICommandBase;
 //các interface yêu cầu thay đổi dữ liệu  | có trả payload và không
-public interface ICommand<TResponse> : IRequest<Result<TResponse>>;
+public interface ICommand<TResponse> : IRequest<Result<TResponse>>, ICommandBase;
 
 //Abstraction: là nhuwxg thằng quy ước được dùng chung
 

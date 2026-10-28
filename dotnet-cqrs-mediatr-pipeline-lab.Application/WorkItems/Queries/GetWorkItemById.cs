@@ -6,7 +6,7 @@ using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Queries;
 
-public  class GetWorkItemByIdQueryHandler(IWorkItemRepository repository) :
+public  class GetWorkItemById(IWorkItemRepository repository) :
     IQueryHandler<Query.GetWorkItemById, Response.WorkItemResponse>
 {
     public async Task<Result<Response.WorkItemResponse>> Handle(

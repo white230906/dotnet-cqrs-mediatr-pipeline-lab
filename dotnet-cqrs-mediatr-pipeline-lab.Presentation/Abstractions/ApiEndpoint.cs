@@ -1,3 +1,4 @@
+using DotNetCqrsMediatRPipelineLab.Contract.Abstractions.Results;
 using Microsoft.AspNetCore.Http;
 
 namespace DotNetCqrsMediatRPipelineLab.Presentation.Abstractions;
@@ -24,6 +25,33 @@ public abstract class ApiEndpoint
             "Validation error",
             errorCode,
             detail);
+    }
+    
+    protected static IResult Failure(Result result)
+    {
+        if (result.IsSuccess)
+        {
+            throw new InvalidOperationException(
+                "A successful result cannot be mapped as a failure.");
+        }
+
+        var error = result.Errors.First();
+
+        return error.Code switch
+        {
+            "WorkItem.NotFound" =>
+                NotFound(error.Code, error.Message),
+
+            "WorkItem.InvalidState" or
+                "WorkItem.ConcurrencyConflict" =>
+                Conflict(error.Code, error.Message),
+
+            _ => Results.Problem(
+                statusCode: StatusCodes.Status500InternalServerError,
+                title: "Internal server error",
+                detail: "An unexpected error occurred.",
+                type: "Server.UnexpectedError")
+        };
     }
  
     protected static IResult Conflict(

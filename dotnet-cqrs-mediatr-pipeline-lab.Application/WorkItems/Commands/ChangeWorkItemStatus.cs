@@ -6,7 +6,7 @@ using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Commands;
 
-public  class ChangeWorkItemStatusCommandHandler(IWorkItemRepository repository, TimeProvider timeProvider)
+public  class ChangeWorkItemStatus(IWorkItemRepository repository, TimeProvider timeProvider)
     : ICommandHandler<Command.ChangeWorkItemStatus, Response.WorkItemResponse>
 {
     public async Task<Result<Response.WorkItemResponse>> Handle(

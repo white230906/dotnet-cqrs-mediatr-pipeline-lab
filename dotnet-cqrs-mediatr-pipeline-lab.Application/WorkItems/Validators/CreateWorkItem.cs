@@ -4,9 +4,9 @@ using Microsoft.Extensions.Options;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Validators;
 
-public class CreateWorkItemCommandValidator: AbstractValidator<Command.CreateWorkItem>
+public class CreateWorkItem: AbstractValidator<Command.CreateWorkItem>
 {
-    public CreateWorkItemCommandValidator(IOptions<WorkItemOptions> options)
+    public CreateWorkItem(IOptions<WorkItemOptions> options)
     {
         var maxTitleLength = options.Value.MaxTitleLength;
 

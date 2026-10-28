@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using DotNetCqrsMediatRPipelineLab.Contract.WorkItems;
 using DotNetCqrsMediatRPipelineLab.Presentation.Abstractions;
-using WorkItemService = DotNetCqrsMediatRPipelineLab.Application.WorkItems.IService;
+using MediatR;
 
 namespace DotNetCqrsMediatRPipelineLab.Presentation.Apis;
 
@@ -44,63 +44,46 @@ public class WorkItem: ApiEndpoint, ICarterModule
         
         group.MapGet("{id:guid}/history", GetHistory) 
             .WithName("GetWorkItemStatusHistory") 
-            .Produces< 
-                IReadOnlyCollection< 
+            .Produces<IReadOnlyCollection< 
                     Response.WorkItemStatusHistoryResponse>>() 
             .ProducesProblem(StatusCodes.Status404NotFound);
 
     }
     
-    private static async Task<IResult> GetAll(WorkItemService service, CancellationToken cancellationToken) 
+    private static async Task<IResult> GetAll(ISender sender, CancellationToken cancellationToken) 
     { 
-        var result = await service.GetAllAsync(cancellationToken); 
- 
-        return Results.Ok(result);
+        var result = await sender.Send(new Query.GetWorkItems(), cancellationToken);
+
+        return result.IsSuccess ? Results.Ok(result.Value) : Failure(result);
     }
 
-    private static async Task<IResult> GetById(Guid id, WorkItemService service, CancellationToken cancellationToken)
+    private static async Task<IResult> GetById(Guid id, ISender sender, CancellationToken cancellationToken)
     {
-        var result = await service.GetByIdAsync(id, cancellationToken);
+        var result = await sender.Send(new Query.GetWorkItemById(id), cancellationToken);
 
-        return result is null
-            ? NotFound(
-                "WorkItem.NotFound",
-                $"Work item '{id}' does not exist.")
-            : Results.Ok(result);
+        return result.IsSuccess ? Results.Ok(result.Value) : Failure(result);
     }
 
-    private static async Task<IResult> Create(Request.CreateWorkItemRequest request, WorkItemService service, CancellationToken cancellationToken) 
-          { 
-              var result = await service.CreateAsync( 
-                  request, 
-                  cancellationToken); 
- 
-              return Results.Created( 
-                  $"/api/v1/work-items/{result.Id}", 
-                  result); 
-          }
+    private static async Task<IResult> Create(Request.CreateWorkItemRequest request, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new Command.CreateWorkItem(request.Title), cancellationToken);
 
-    private static async Task<IResult> UpdateStatus(Guid id, Request.UpdateWorkItemStatusRequest request, 
-                                                        WorkItemService service, 
-                                                        CancellationToken cancellationToken) 
-    { 
-        var result = await service.UpdateStatusAsync(id, request, cancellationToken); 
- 
-        return result is null 
-            ? NotFound( 
-                "WorkItem.NotFound", 
-                $"Work item '{id}' does not exist.") 
-            : Results.Ok(result); 
+        return result.IsSuccess ? Results.Created($"/api/v1/work-items/{result.Value.Id}", result.Value) : Failure(result);
+    }
+
+    private static async Task<IResult> UpdateStatus(Guid id, Request.UpdateWorkItemStatusRequest request, ISender sender, CancellationToken cancellationToken)
+    {
+        var command = new Command.ChangeWorkItemStatus(id, request.Status, request.Version);
+
+        var result = await sender.Send(command, cancellationToken);
+
+        return result.IsSuccess ? Results.Ok(result.Value) : Failure(result);
     }
     
-    private static async Task<IResult> GetHistory(Guid id, WorkItemService service, CancellationToken cancellationToken) 
-    { 
-        var result = await service.GetHistoryAsync(id, cancellationToken); 
- 
-        return result is null 
-            ? NotFound( 
-                "WorkItem.NotFound", 
-                $"Work item '{id}' does not exist.") 
-            : Results.Ok(result); 
+    private static async Task<IResult> GetHistory(Guid id, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new Query.GetWorkItemHistory(id), cancellationToken);
+
+        return result.IsSuccess ? Results.Ok(result.Value) : Failure(result);
     }
 }

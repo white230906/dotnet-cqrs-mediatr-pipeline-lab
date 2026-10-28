@@ -6,7 +6,7 @@ using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Queries;
 
-public class GetWorkItemHistoryQueryHandler(IWorkItemRepository repository) : IQueryHandler<
+public class GetWorkItemHistory(IWorkItemRepository repository) : IQueryHandler<
         Query.GetWorkItemHistory, IReadOnlyCollection<Response.WorkItemStatusHistoryResponse>>
 {
     public async Task<Result<IReadOnlyCollection<Response.WorkItemStatusHistoryResponse>>> Handle(

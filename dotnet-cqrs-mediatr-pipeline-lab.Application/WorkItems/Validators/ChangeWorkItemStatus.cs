@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Validators;
 
-public class ChangeWorkItemStatusCommandValidator : AbstractValidator<Command.ChangeWorkItemStatus>
+public class ChangeWorkItemStatus : AbstractValidator<Command.ChangeWorkItemStatus>
 {
-    public ChangeWorkItemStatusCommandValidator()
+    public ChangeWorkItemStatus()
     {
         RuleFor(command => command.Id)
             .NotEmpty();

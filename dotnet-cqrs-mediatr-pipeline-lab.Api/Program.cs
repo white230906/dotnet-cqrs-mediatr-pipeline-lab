@@ -1,4 +1,5 @@
 using DotNetCqrsMediatRPipelineLab.Api.DependencyInjection;
+using DotNetCqrsMediatRPipelineLab.Application.DependencyInjection;
 using DotNetCqrsMediatRPipelineLab.Persistence.DependencyInjection;
 using Serilog;
 
@@ -24,6 +25,7 @@ private static void ConfigureSerilog(
   }
  */
 
+builder.Services.AddApplication();
 builder.Services.AddApiServices();
 builder.Services.AddPostgreSqlPersistence( 
     builder.Configuration, 

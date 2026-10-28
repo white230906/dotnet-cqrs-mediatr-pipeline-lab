@@ -6,7 +6,7 @@ using DotNetCqrsMediatRPipelineLab.Domain.WorkItems;
 
 namespace DotNetCqrsMediatRPipelineLab.Application.WorkItems.Queries;
 
-public class GetWorkItemsQueryHandler(IWorkItemRepository repository) : 
+public class GetWorkItems(IWorkItemRepository repository) : 
     IQueryHandler<Query.GetWorkItems, IReadOnlyCollection<Response.WorkItemResponse>>
 {
     public async Task<Result<IReadOnlyCollection<Response.WorkItemResponse>>> Handle(Query.GetWorkItems request, CancellationToken cancellationToken)

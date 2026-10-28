@@ -10,10 +10,10 @@
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
         <PackageReference Include="Carter" Version="8.1.0" />
+        <PackageReference Include="MediatR" Version="12.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Application\dotnet-cqrs-mediatr-pipeline-lab.Application.csproj" />
       <ProjectReference Include="..\dotnet-cqrs-mediatr-pipeline-lab.Contract\dotnet-cqrs-mediatr-pipeline-lab.Contract.csproj" />
     </ItemGroup>
     

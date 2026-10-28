@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using DotNetCqrsMediatRPipelineLab.Domain.Exceptions;
 
@@ -9,10 +10,7 @@ public class ExceptionHandlingMiddleware
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
     private readonly IHostEnvironment _environment;
  
-    public ExceptionHandlingMiddleware(
-        RequestDelegate next,
-        ILogger<ExceptionHandlingMiddleware> logger,
-        IHostEnvironment environment)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IHostEnvironment environment)
     {
         _next = next;
         _logger = logger;
@@ -32,6 +30,15 @@ public class ExceptionHandlingMiddleware
                 "Request {CorrelationId} was cancelled by the client.",
                 context.TraceIdentifier);
         }
+        catch (ValidationException exception)
+        {
+            if (context.Response.HasStarted)
+            {
+                throw;
+            }
+
+            await WriteValidationProblemDetailsAsync(context, exception);
+        }
         catch (Exception exception)
         {
             if (context.Response.HasStarted)
@@ -48,9 +55,7 @@ public class ExceptionHandlingMiddleware
         }
     }
     
-    private async Task WriteProblemDetailsAsync(
-        HttpContext context,
-        Exception exception)
+    private async Task WriteProblemDetailsAsync(HttpContext context, Exception exception)
     {
         var (statusCode, title, errorCode) = exception switch
         {
@@ -116,6 +121,42 @@ public class ExceptionHandlingMiddleware
         await context.Response.WriteAsJsonAsync(
             problem,
             context.RequestAborted);
+    }
+    
+    private async Task WriteValidationProblemDetailsAsync(HttpContext context, ValidationException exception)
+    {
+        var errors = exception.Errors
+            .GroupBy(error => error.PropertyName)
+            .ToDictionary(
+                group => group.Key,
+                group => group
+                    .Select(error => error.ErrorMessage)
+                    .Distinct()
+                    .ToArray());
+
+        _logger.LogWarning(
+            exception,
+            "Request {CorrelationId} failed validation.",
+            context.TraceIdentifier);
+
+        var problem = new ProblemDetails
+        {
+            Status = StatusCodes.Status422UnprocessableEntity,
+            Title = "Validation error",
+            Type = "Request.ValidationFailed",
+            Detail = "One or more validation errors occurred.",
+            Instance = context.Request.Path
+        };
+
+        problem.Extensions["errorCode"] = "Request.ValidationFailed";
+        problem.Extensions["errors"] = errors;
+        problem.Extensions["correlationId"] = context.TraceIdentifier;
+
+        context.Response.Clear();
+        context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+        context.Response.ContentType = "application/problem+json";
+
+        await context.Response.WriteAsJsonAsync(problem, context.RequestAborted);
     }
 }
     
