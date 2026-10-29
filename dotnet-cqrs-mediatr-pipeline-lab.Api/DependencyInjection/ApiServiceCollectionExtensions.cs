@@ -2,10 +2,6 @@ using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Carter;
 using DotNetCqrsMediatRPipelineLab.Application.WorkItems;
-using WorkItemService =
-    DotNetCqrsMediatRPipelineLab.Application.WorkItems.IService;
-using WorkItemServiceImplementation =
-    DotNetCqrsMediatRPipelineLab.Application.WorkItems.Service;
 namespace DotNetCqrsMediatRPipelineLab.Api.DependencyInjection;
 
 public static class ApiServiceCollectionExtensions
@@ -55,7 +51,6 @@ public static class ApiServiceCollectionExtensions
             .ValidateOnStart();
         
         //Singleton để dữ liệu in-memory tồn tại qua nhiều request
-        services.AddScoped<WorkItemService, WorkItemServiceImplementation>();
         
         return services;   
     }
